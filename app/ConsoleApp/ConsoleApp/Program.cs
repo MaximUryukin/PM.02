@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace ConsoleApp
 {
-    class Program
+    public class Program
     {
         static int n;                          // кол-во вершин
         static double[] speed;                 // speed[i] км/ч для рёбра i
@@ -51,7 +51,7 @@ namespace ConsoleApp
                 Console.WriteLine("Путь: {0}", string.Join(" → ", path.ConvertAll(x => x + 1)));
             }
         }
-        static bool LoadGraph(string path)
+        public static bool LoadGraph(string path)
         {
             if (!File.Exists(path)) return false;
             var lines = File.ReadAllLines(path);
@@ -70,7 +70,7 @@ namespace ConsoleApp
             return true;
         }
 
-        static void GenerateSpeeds()
+        public static void GenerateSpeeds()
         {
             var rnd = new Random();
             speed = new double[edges.Length];
@@ -78,7 +78,7 @@ namespace ConsoleApp
                 speed[i] = 30 + rnd.NextDouble() * 50; 
         }
 
-        static void BuildTimeMatrix()
+        public static void BuildTimeMatrix()
         {
             adjMetres = new double[n, n];
             edgeId = new int[n, n];
@@ -102,14 +102,14 @@ namespace ConsoleApp
             }
         }
 
-        static void PrintSpeeds()
+        public static void PrintSpeeds()
         {
             Console.WriteLine("\nСкорости на участках (км/ч):");
             for (int e = 0; e < edges.Length; e++)
                 Console.WriteLine("  {0}–{1}: {2:F1}", edges[e].from, edges[e].to, speed[e]);
         }
 
-        static double ComputeTimeAndPath(int start, int goal, out System.Collections.Generic.List<int> path)
+        public static double ComputeTimeAndPath(int start, int goal, out System.Collections.Generic.List<int> path)
         {
             double[] dist = Dijkstra(adjMetres, start);
             int[] prev = new int[n];
@@ -146,7 +146,7 @@ namespace ConsoleApp
             path.Reverse();
             return dist[goal];
         }
-        private static double[] Dijkstra(double[,] a, int v0)
+        public static double[] Dijkstra(double[,] a, int v0)
         {
             double[] dist = new double[n];
             bool[] vis = new bool[n];
