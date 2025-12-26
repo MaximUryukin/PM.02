@@ -110,6 +110,43 @@ namespace ConsoleApp
                 Console.WriteLine("  {0}–{1}: {2:F1}", edges[e].from, edges[e].to, speed[e]);
         }
 
-       
+        static double ComputeTimeAndPath(int start, int goal, out System.Collections.Generic.List<int> path)
+        {
+            double[] dist = Dijkstra(adjMetres, start);
+            int[] prev = new int[n];
+            for (int i = 0; i < n; i++) prev[i] = -1;
+            bool[] vis = new bool[n];
+            int unvis = n;
+
+            for (int i = 0; i < n; i++) dist[i] = double.MaxValue;
+            dist[start] = 0.0;
+
+            while (unvis > 0)
+            {
+                int v = -1;
+                for (int i = 0; i < n; i++)
+                {
+                    if (vis[i]) continue;
+                    if (v == -1 || dist[v] > dist[i]) v = i;
+                }
+                vis[v] = true; unvis--;
+                for (int i = 0; i < n; i++)
+                {
+                    if (dist[i] > dist[v] + adjMetres[v, i])
+                    {
+                        dist[i] = dist[v] + adjMetres[v, i];
+                        prev[i] = v;
+                    }
+                }
+            }
+
+            path = new System.Collections.Generic.List<int>();
+            if (dist[goal] == double.MaxValue) return -1;
+            for (int at = goal; at != -1; at = prev[at])
+                path.Add(at);
+            path.Reverse();
+            return dist[goal];
+        }
+
     }
 }
